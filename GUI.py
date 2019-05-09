@@ -16,11 +16,12 @@ class Klassenliste:
         self.gui_columns_width = [15,25,15]
         self.font_normal = ('Sans','12')
         self.font_bold = ('Sans','12','bold')
+        self.font_small = ('Sans',str(int(self.font_normal[1])-2))
 
         self.root = tk.Tk()
         self.root.title('Excelersteller')
         self.container = tk.Frame(master=self.root, width=self.gui_columns_width[0])
-        self.container.grid(column=0, row=0, sticky="WE")
+        self.container.grid(column=0, row=0, sticky="WE", padx=15, pady=15)
 
         self.label_klassenliste = ttk.Label(master=self.container, text="Klassenliste:", font=self.font_normal)
         self.label_klassenliste.grid(column=0, row=0, sticky="W")
@@ -31,22 +32,22 @@ class Klassenliste:
         self.Klassenliste_ok = False
         #self.klassenliste_entered.focus()
 
-        self.bbutton= tk.Button(self.container, text="Browse", width=self.gui_columns_width[2], command=self.browse_txt, font=self.font_normal)
-        self.bbutton.grid(column=2, row=0, sticky="W")
+        self.bbutton= tk.Button(self.container, text="Browse", width=self.gui_columns_width[2], command=self.browse_txt, font=self.font_small)
+        self.bbutton.grid(column=2, row=0, sticky="W", padx=10)
 
         self.label_benennung = ttk.Label(master=self.container, text="Bezeichnung:", width=self.gui_columns_width[0], font=self.font_normal)
-        self.label_benennung.grid(column=0, row=1, sticky="W") 
+        self.label_benennung.grid(column=0, row=1, sticky="W", pady=5) 
         self.benennung = tk.StringVar()
         self.benennung_entered = ttk.Entry(self.container, width=self.gui_columns_width[1], textvariable=self.benennung, font=self.font_normal)
-        self.benennung_entered.grid(column=1, row=1, sticky="W")
+        self.benennung_entered.grid(column=1, row=1, sticky="W", pady=5)
 
         self.label_aufgaben = ttk.Label(master=self.container, text="Aufgaben:", width=self.gui_columns_width[0], font=self.font_normal)
-        self.label_aufgaben.grid(column=0, row=2, sticky="nw") 
+        self.label_aufgaben.grid(column=0, row=2, sticky="nw", pady=5) 
         self.task_container = tk.Frame(master=self.container)
         self.task_container.grid(column=1, row=2, sticky="NW")
 
-        self.addTask = tk.Button(self.container, text="+", command=self.addBox, width=self.gui_columns_width[2], font=self.font_bold)
-        self.addTask.grid(column=2, row=2, sticky="NW")
+        self.addTask = tk.Button(self.container, text="+", command=self.addBox, font=self.font_bold)
+        self.addTask.grid(column=2, row=2, sticky="NW", padx=10, pady=5)
 
         self.btd_start = tk.Button(self.container, text='Excel erstellen', command=self.createExcel, font=self.font_normal)
         self.btd_start.grid(column=1, row=3, sticky="E", columnspan=2)
@@ -63,6 +64,7 @@ class Klassenliste:
 
     def browse_txt(self):
         self.file_path = filedialog.askopenfilenames(title='Klassenliste auswählen... ', filetypes = (("txt files","*.txt"),("all files","*.*")))
+        print(self.file_path)
         if self.file_path == '':
             self.klassenliste_txt.set('Keine Datei ausgewählt.')
             self.klassenliste_entered.config(foreground='red')
@@ -80,7 +82,7 @@ class Klassenliste:
     def addBox(self):
 
         self.be_width = 12
-        self.entry_width = 2
+        self.entry_width = 10
 
         self.frame = tk.LabelFrame(self.task_container, text='')
         self.frame.grid(sticky="NW")
@@ -91,23 +93,23 @@ class Klassenliste:
         self.tkvar.set('Aufgabe') # set the default options
 
         self.be_label = ttk.Label(self.frame, text='BE', font=self.font_normal, width=self.be_width)
-        self.be_label.grid(column=0, row=1, sticky="w")
+        self.be_label.grid(column=0, row=1, sticky="W")
         self.be_var = tk.StringVar()
-        self.be = tk.Entry(self.frame, textvariable=self.be_var, font=self.font_normal)
-        self.be.grid(column=1, row=1, sticky="e") 
+        self.be = tk.Entry(self.frame, textvariable=self.be_var, font=self.font_normal, width=self.entry_width)
+        self.be.grid(column=1, row=1, sticky="W") 
 
         self.be2_label = ttk.Label(self.frame, text='', font=self.font_normal, width=self.be_width)
-        self.be2_label.grid(column=0, row=2, sticky="w")
+        self.be2_label.grid(column=0, row=2, sticky="W")
         self.be2_var = tk.StringVar()
-        self.be2 = tk.Entry(self.frame, textvariable=self.be2_var, font=self.font_normal)
-        self.be2.grid(column=1, row=2, sticky="e") 
+        self.be2 = tk.Entry(self.frame, textvariable=self.be2_var, font=self.font_normal, width=self.entry_width)
+        self.be2.grid(column=1, row=2, sticky="W") 
         self.be2.config(state='disabled')
 
         self.be3_label = ttk.Label(self.frame, text='', font=self.font_normal, width=self.be_width)
         self.be3_label.grid(column=0, row=3, sticky="w")
         self.be3_var = tk.StringVar()
-        self.be3 = tk.Entry(self.frame, textvariable=self.be3_var, font=self.font_normal)
-        self.be3.grid(column=1, row=3, sticky="e")
+        self.be3 = tk.Entry(self.frame, textvariable=self.be3_var, font=self.font_normal, width=self.entry_width)
+        self.be3.grid(column=1, row=3, sticky="W")
         self.be3.config(state='disabled')
 
 
@@ -117,7 +119,7 @@ class Klassenliste:
 
         #self.choice = tk.OptionMenu(self.frame, self.tkvar, command=lambda x=len(all_entries): self.modifyTaskInputs(x), *self.choices)
         self.choice = tk.OptionMenu(self.frame, self.tkvar, *self.choices, command=partial(self.modifyTaskInputs,len(all_entries)))
-        self.choice.grid(row=0, column=0, columnspan=2,sticky="W")
+        self.choice.grid(row=0, column=0, columnspan=2, sticky="W")
         self.choice.config(width=self.gui_columns_width[1]-4, font=self.font_normal)
         all_entries.append( (self.frame,self.tkvar,((self.be_label, self.be_var, self.be),(self.be2_label, self.be2_var, self.be2),(self.be3_label, self.be3_var, self.be3)),self.btd) )  
 
@@ -180,7 +182,6 @@ class Klassenliste:
 
     def runExcel(self):
         file = self.file_path[0]
-        print('Datei: ' + file)
         self.xlsx_file_name = file.replace('.txt', '.xlsx')
 
         # Klassenliste laden
@@ -201,9 +202,13 @@ class Klassenliste:
 
 
         # Excel-File erstellen
-        wb = Workbook()
-        ws = wb.active
-        ws.title = "Klasse"
+        self.wb = Workbook()
+        ws = self.wb.active
+        if self.benennung.get() != '':
+        	self.worksheet_title = self.benennung.get()
+        else:
+        	self.worksheet_title = 'Klassenübersicht'
+        ws.title = self.worksheet_title
         ws.sheet_properties.tabColor = "1072BA"
 
         # Querformat
@@ -334,8 +339,6 @@ class Klassenliste:
                 makeBorder(ws,columns[start_column] + str(Zeile_erster_Schueler)+':'+columns[start_column+2] + str(Zeile_erster_Schueler+len(self.Klasse)))
 
             # Breite der Spalten anpassen
-            print('Anzahl Spalten: ' + str(tasks[i].getNumCols()))
-            print('Startspalte:' + columns[start_column])
             for s in range(tasks[i].getNumCols()-1):
                 ws.column_dimensions[columns[start_column+s]].width = 10
             ws.column_dimensions[columns[start_column+tasks[i].getNumCols()-1]].width = 15
@@ -499,24 +502,24 @@ class Klassenliste:
 
 
         # Diagramm
-        chart1 = BarChart()
-        chart1.type = "col"
-        chart1.style = 10
-        chart1.title = None
-        chart1.y_axis.title = 'Anzahl'
-        chart1.x_axis.title = 'Note'
-        chart1.legend = None
+        self.chart1 = BarChart()
+        self.chart1.type = "col"
+        self.chart1.style = 10
+        self.chart1.title = None
+        self.chart1.y_axis.title = 'Anzahl'
+        self.chart1.x_axis.title = 'Note'
+        self.chart1.legend = None
 
         data = Reference(ws, min_col=int(columns.find(cells_mit_anzahl[0][0]))+1, min_row=int(cells_mit_anzahl[0][-1]), max_row=int(cells_mit_anzahl[-1][-1]), max_col=int(columns.find(cells_mit_anzahl[-1][0]))+1)
         ref = Reference(ws, min_col=int(columns.find(cells_mit_noten[0][0]))+1, min_row=int(cells_mit_noten[0][-1]), max_row=int(cells_mit_noten[-1][-1]), max_col=int(columns.find(cells_mit_noten[-1][0]))+1)
-        chart1.add_data(data, titles_from_data=False)
-        chart1.set_categories(ref)
-        chart1.shape = 4
-        ws.add_chart(chart1, cells_mit_noten[0][0]+str(int(cells_mit_noten[-1][-1])+2))
+        self.chart1.add_data(data, titles_from_data=False)
+        self.chart1.set_categories(ref)
+        self.chart1.shape = 4
+        ws.add_chart(self.chart1, cells_mit_noten[0][0]+str(int(cells_mit_noten[-1][-1])+2))
 
         # Speichern
         try:
-            wb.save(self.xlsx_file_name)
+            self.wb.save(self.xlsx_file_name)
             self.showButtonOpen(self.xlsx_file_name)
             return 0
         except PermissionError:
@@ -528,9 +531,7 @@ class Klassenliste:
             return 100
 
     def showButtonOpen(self,file_to_open):
-        os_system('start EXCEL.EXE ' + file_to_open)
-
-
+        os_system('start EXCEL.EXE "' + file_to_open + '"')
 
 
 
